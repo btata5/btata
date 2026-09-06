@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اختر بطاقتك اليومية ✨</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-image: url('985725437212673806.jfif'); /* اسم صورة الخلفية مع الامتداد */
+      background-size: cover;                  /* لتغطية الشاشة بالكامل */
+      background-position: center;             /* لتوسيط الصورة */
+      background-repeat: no-repeat;            /* لمنع تكرار الصورة */
+      background-attachment: fixed;            /* لتثبيت الخلفية أثناء التمرير */
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+      color: #ffdd59;
+      text-align: center;
+    }
+
+    p.subtitle {
+      color: #000000;
+      margin-bottom: 30px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 30px;
+      justify-content: center;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    /* تصميم البطاقة بتأثير التقليب (Flip Effect) */
+    .card-container {
+      background-color: transparent;
+      width: 320px;
+      height: 320px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    /* كلاس التدوير عند الضغط */
+    .card-container.flipped .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    }
+
+    /* الوجه الأمامي للبطاقة */
+    .card-front {
+      background: rgba(224, 170, 52, 0.5); /* لون شفاف بنسبة 50% */
+      backdrop-filter: blur(10px);         /* تغبيش الصورة خلف البوكس */
+      -webkit-backdrop-filter: blur(10px); /* لدعم متصفح سَفاري */
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      justify-content: center;
+    }
+
+    .card-front.challenge-bg {
+      background: rgba(224, 170, 52, 0.5);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .card-front h2 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    .card-front p {
+      color: #fff;
+    }
+
+    /* الوجه الخلفي للبطاقة (النتيجة) */
+    .card-back {
+      background: rgba(255, 255, 255, 0.85); /* لون أبيض شفاف بنسبة 85% لتسهيل قراءة النص */
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: #333;
+      transform: rotateY(180deg);
+      border: 2px solid #ffdd59;
+    }
+
+    .card-back h3 {
+      color: #2c3e50;
+      margin-bottom: 10px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+      width: 100%;
+    }
+
+    .content-text {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      color: #444;
+      margin: 10px 0;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+    }
+
+    .action-area {
+      width: 100%;
+      background: rgba(248, 249, 250, 0.9);
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #eee;
+    }
+
+    .action-area p {
+      font-size: 0.95rem;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+
+    .btn-yes {
+      background: #2ed573;
+      color: #fff;
+      border: none;
+      padding: 6px 18px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-yes:hover {
+      background: #26af5f;
+    }
+
+    .thank-you-msg {
+      color: #2ed573;
+      font-weight: bold;
+      font-size: 0.95rem;
+      display: none;
+    }
+
+    .reset-btn {
+      background: transparent;
+      color: #888;
+      border: none;
+      font-size: 0.8rem;
+      margin-top: 5px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>✨ اختار بطاقه يلا ✨</h1>
+  <p class="subtitle">والله يتم استغلالكم عشان اوخد حسنات هعععععععععع</p>
+
+  <div class="container">
+    
+    <!-- البطاقة الأولى: دعاء -->
+    <div class="card-container" id="duaa-card" onclick="flipCard('duaa')">
+      <div class="card-inner">
+        <div class="card-front">
+          <h2>بوكس الدعاء</h2>
+          <p>اضغط للفتح</p>
+        </div>
+        <div class="card-back">
+          <h3>ادعي يمامي</h3>
+          <div class="content-text" id="duaa-text">...</div>
+
+          <div class="action-area" onclick="event.stopPropagation();">
+            <div id="duaa-question-box">
+              <p>هل قرأت الدعاء؟</p>
+              <button class="btn-yes" onclick="confirmAction('duaa')">نعم</button>
+            </div>
+            <div class="thank-you-msg" id="duaa-thank-you">
+              شكراً! أخذت بطاطا حسنات 🥔✨
+            </div>
+            <button class="reset-btn" onclick="resetCard('duaa')">دعاء آخر ؟</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- البطاقة الثانية: تحدي ديني -->
+    <div class="card-container" id="challenge-card" onclick="flipCard('challenge')">
+      <div class="card-inner">
+        <div class="card-front challenge-bg">
+          <h2>التحدي الديني</h2>
+          <p>اضغط للفتح</p>
+        </div>
+        <div class="card-back">
+          <h3>سويه يا بلا كسل</h3>
+          <div class="content-text" id="challenge-text">...</div>
+
+          <div class="action-area" onclick="event.stopPropagation();">
+            <div id="challenge-question-box">
+              <p>هل أنجزت التحدي؟</p>
+              <button class="btn-yes" onclick="confirmAction('challenge')">نعم</button>
+            </div>
+            <div class="thank-you-msg" id="challenge-thank-you">
+              شكراً! أخذت بطاطا حسنات 🥔✨
+            </div>
+            <button class="reset-btn" onclick="resetCard('challenge')">تحدٍّ آخر ؟؟؟</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // 📝 قائمة الأقوال والأدعية
+    const duaas = [
+      "اللهم اغفر لي ذنبي كله، دقه وجله، أوله وآخره، علانيته وسره",
+      "اللهم إني أسألك العفو والعافية في الدنيا والآخرة",
+      "اللهم إني أعوذ بك من الهم والحَزَن، وأعوذ بك من العجز والكسل، وأعوذ بك من الجُبن والبخل، وأعوذ بك من غلبة الدين وقهر الرجال",
+      "اللهم مصرف القلوب صرف قلوبنا على طاعتك",
+      "اللهم إني أسألك حبك، وحب من يحبك، وحب عمل يقربني إلى حبك",
+      "اللهم إني أعوذ بك من شر ما عملت، ومن شر ما لم أعمل",
+      "اللهم إني أعوذ بك من زوال نعمتك، وتحول عافيتك، وفجاءة نقمتك، وجميع سخطك",
+      "اللهم إني أعوذ بك من فتنة النار وعذاب النار، وأعوذ بك من فتنة القبر وعذاب القبر",
+      "اللهم إني أسألك الجنة وما قرب إليها من قول أو عمل، وأعوذ بك من النار وما قرب إليها من قول أو عمل",
+      "اللهم إني أعوذ بك من شر سمعي، ومن شر بصري، ومن شر لساني، ومن شر قلبي، ومن شر منيّي",
+      "اللهم اغسلني من خطاياي بالماء والثلج والبرد",
+      "اللهم باعد بيني وبين خطاياي كما باعدت بين المشرق والمغرب",
+      "اللهم نقِّني من خطاياي كما يُنقَّى الثوب الأبيض من الدنس",
+      "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً",
+      "اللهم إني أعوذ بك من الكسل والهرم والمأثم والمغرم",
+      "اللهم إني أعوذ بك من البرص والجنون والجذام ومن سيئ الأسقام",
+      "اللهم إني أعوذ بك من منكرات الأخلاق والأعمال والأهواء",
+      "اللهم إني أعوذ بك من قلب لا يخشع، ومن دعاء لا يُسمع، ومن نفس لا تشبع، ومن علم لا ينفع",
+      "اللهم إني أعوذ بك من شر ما خلق، ومن شر ما ذرأ وبرأ، ومن شر ما ينزل من السماء، ومن شر ما يعرج فيها",
+      "اللهم إني أعوذ بك من شر فتنة الغنى، وأعوذ بك من فتنة الفقر"
+    ];
+
+    // 📝 قائمة التحديات الدينية
+    const challenges = [
+      "قول الحمد لله 10 مرات",
+      "قول سبحان الله 20 مرة",
+      "قول الله أكبر 15 مرة",
+      "قول لا إله إلا الله 12 مرة",
+      "اقرأ سورة الفاتحة مرة واحدة بنيّة الدعاء",
+      "صلِّ على النبي ﷺ 25 مرة",
+      "استغفر الله 30 مرة",
+      "اقرأ آية الكرسي مرة واحدة",
+      "قول سبحان الله وبحمده 10 مرات",
+      "قول سبحان الله العظيم 10 مرات",
+      "اقرأ سورة الإخلاص 3 مرات",
+      "اقرأ سورة الفلق والناس مرتين",
+      "قول رضيت بالله ربًا وبالإسلام دينًا وبمحمد ﷺ نبيًا 3 مرات",
+      "قول لا حول ولا قوة إلا بالله 15 مرة",
+      "قول حسبي الله ونعم الوكيل 7 مرات",
+      "قول اللهم اغفر لي ولوالدي 10 مرات",
+      "قول اللهم ارزقني حسن الخاتمة 5 مرات",
+      "قول اللهم اجعلني من أهل القرآن 5 مرات",
+      "قول اللهم صلِّ على محمد وآل محمد 20 مرة",
+      "قول اللهم اجعلني من الشاكرين 10 مرات"
+    ];
+
+    function flipCard(type) {
+      const card = document.getElementById(`${type}-card`);
+      if (card.classList.contains('flipped')) return;
+
+      if (type === 'duaa') {
+        const randomIndex = Math.floor(Math.random() * duaas.length);
+        document.getElementById('duaa-text').innerText = duaas[randomIndex];
+      } else if (type === 'challenge') {
+        const randomIndex = Math.floor(Math.random() * challenges.length);
+        document.getElementById('challenge-text').innerText = challenges[randomIndex];
+      }
+
+      card.classList.add('flipped');
+    }
+
+    function confirmAction(type) {
+      document.getElementById(`${type}-question-box`).style.display = 'none';
+      document.getElementById(`${type}-thank-you`).style.display = 'block';
+    }
+
+    function resetCard(type) {
+      if (type === 'duaa') {
+        const randomIndex = Math.floor(Math.random() * duaas.length);
+        document.getElementById('duaa-text').innerText = duaas[randomIndex];
+      } else if (type === 'challenge') {
+        const randomIndex = Math.floor(Math.random() * challenges.length);
+        document.getElementById('challenge-text').innerText = challenges[randomIndex];
+      }
+
+      document.getElementById(`${type}-question-box`).style.display = 'block';
+      document.getElementById(`${type}-thank-you`).style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
